@@ -89,8 +89,7 @@ export class AuthorListComponent implements OnInit {
     const dialogRef = this.dialog.open(DialogConfirmationComponent, {
       data: {
         title: 'Eliminar autor',
-        description:
-          'Atención si borra el autor se perderán sus datos.<br> ¿Desea eliminar el autor?',
+        description: 'Atención si borra el autor se perderán sus datos.<br> ¿Desea eliminar el autor?',
       },
     });
 
