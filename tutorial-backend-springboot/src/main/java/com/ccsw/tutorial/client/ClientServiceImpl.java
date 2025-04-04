@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 /**
  * @author ccsw
@@ -40,6 +41,12 @@ public class ClientServiceImpl implements ClientService {
      */
     @Override
     public void save(Long id, ClientDto dto) {
+        Optional<Client> existingClient = clientRepository.findByName(dto.getName());
+
+        if (existingClient.isPresent() && (id == null || !existingClient.get().getId().equals(id))) {
+            throw new IllegalArgumentException("El nombre del cliente ya existe");
+        }
+
         Client client;
 
         if (id == null) {

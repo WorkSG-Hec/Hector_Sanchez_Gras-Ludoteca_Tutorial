@@ -35,7 +35,6 @@ export class CategoryEditComponent implements OnInit {
   onSave() {
     this.categoryService.saveCategory(this.category).subscribe(() => {
       this.dialogRef.close();
-      console.log("guardado", this.data.category.name);
     });
   }
 
