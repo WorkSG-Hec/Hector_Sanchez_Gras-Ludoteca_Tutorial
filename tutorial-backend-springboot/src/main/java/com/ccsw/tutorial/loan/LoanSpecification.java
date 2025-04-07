@@ -5,6 +5,8 @@ import com.ccsw.tutorial.loan.model.Loan;
 import jakarta.persistence.criteria.*;
 import org.springframework.data.jpa.domain.Specification;
 
+import java.time.LocalDate;
+
 public class LoanSpecification implements Specification<Loan> {
     private static final long serialVersionUID = 1L;
     private final SearchCriteria criteria;
@@ -16,6 +18,13 @@ public class LoanSpecification implements Specification<Loan> {
     @Override
     public Predicate toPredicate(Root<Loan> root, CriteriaQuery<?> query, CriteriaBuilder builder) {
         if (criteria.getOperation().equalsIgnoreCase(":") && criteria.getValue() != null) {
+            if ("filterDate".equals(criteria.getKey())) {
+                Path<LocalDate> loanDatePath = root.get("loanDate");
+                Path<LocalDate> returnDatePath = root.get("returnDate");
+                LocalDate date = (LocalDate) criteria.getValue();
+                return builder.between(builder.literal(date), loanDatePath, returnDatePath);
+            }
+
             Path<String> path = getPath(root);
             if (path.getJavaType() == String.class) {
                 return builder.like(path, "%" + criteria.getValue() + "%");

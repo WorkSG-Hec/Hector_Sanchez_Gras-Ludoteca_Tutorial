@@ -83,7 +83,7 @@ public class LoanDto {
     /**
      * @param returnDate new value of {@link #getReturnDate}.
      */
-    public void getReturnDate(LocalDate returnDate) {
+    public void setReturnDate(LocalDate returnDate) {
         this.returnDate = returnDate;
     }
 }

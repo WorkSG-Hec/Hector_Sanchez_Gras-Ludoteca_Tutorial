@@ -8,6 +8,7 @@ import com.ccsw.tutorial.loan.model.LoanDto;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
@@ -50,10 +51,10 @@ public class LoanServiceImpl implements LoanService {
      * {@inheritDoc}
      */
     @Override
-    public List<Loan> find(Long idGame, Long idClient, LocalDate filterDate) {
+    public Page<Loan> findPage(Long idGame, Long idClient, LocalDate filterDate) {
         LoanSpecification gameSpec = new LoanSpecification(new SearchCriteria("game.id", ":", idGame));
         LoanSpecification clientSpec = new LoanSpecification(new SearchCriteria("client.id", ":", idClient));
-        LoanSpecification dateSpec = new LoanSpecification(new SearchCriteria("loanDate", ":", filterDate));
+        LoanSpecification dateSpec = new LoanSpecification(new SearchCriteria("filterDate", ":", filterDate));
 
         Specification<Loan> spec = Specification.where(gameSpec).and(clientSpec).and(dateSpec);
 
