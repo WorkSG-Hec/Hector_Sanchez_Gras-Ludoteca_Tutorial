@@ -3,6 +3,7 @@ package com.ccsw.tutorial.loan;
 import com.ccsw.tutorial.loan.model.Loan;
 import com.ccsw.tutorial.loan.model.LoanDto;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -28,7 +29,7 @@ public interface LoanService {
      * @param filterDate fecha del filtro
      * @return {@link Page} de {@link Loan}
      */
-    Page<Loan> findPage(Long idGame, Long idClient, LocalDate filterDate);
+    Page<Loan> findPage(Long idGame, Long idClient, LocalDate filterDate, Pageable pageable);
 
     /**
      * Metodo para guardar un {@link Loan}.

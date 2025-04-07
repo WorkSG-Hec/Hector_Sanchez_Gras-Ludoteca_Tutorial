@@ -2,12 +2,15 @@ package com.ccsw.tutorial.loan;
 
 import com.ccsw.tutorial.loan.model.Loan;
 import com.ccsw.tutorial.loan.model.LoanDto;
+import com.ccsw.tutorial.loan.model.LoanSearchDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
@@ -39,15 +42,17 @@ public class LoanController {
      * @param filterDateStr filtro de la fecha en formato yyyy-MM-dd
      * @return {@link List} de {@link LoanDto}
      */
-    @Operation(summary = "Find", description = "Method that return a filtered list of Loans")
+    @Operation(summary = "Find Page", description = "Method that return a filtered list of Loans")
     @RequestMapping(path = "", method = RequestMethod.POST)
-    public Page<LoanDto> findPage(@RequestParam(value = "idGame", required = false) Long idGame, @RequestParam(value = "idClient", required = false) Long idClient,
-            @RequestParam(value = "filterDate", required = false) String filterDateStr) {
+    public Page<LoanDto> findPage(@RequestParam(value = "idGame", required = false) Long idGame, @RequestParam(value = "idClient", required = false) Long idClient, @RequestParam(value = "filterDate", required = false) String filterDateStr,
+            @RequestBody LoanSearchDto dto) {
 
         LocalDate filterDate = parseDate(filterDateStr);
 
-        Page<Loan> page = this.loanService.findPage(idGame, idClient, filterDate);
-        return new PageImpl<>(page.getContent().stream().map(e -> mapper.map(e, LoanDto.class)).collect(Collectors.toList()), page.getPageable(), page.getTotalElements());
+        Pageable pageable = PageRequest.of(dto.getPageable().getPageNumber(), dto.getPageable().getPageSize());
+        Page<Loan> page = this.loanService.findPage(idGame, idClient, filterDate, pageable);
+
+        return new PageImpl<>(page.getContent().stream().map(e -> mapper.map(e, LoanDto.class)).collect(Collectors.toList()), pageable, page.getTotalElements());
     }
 
     /**

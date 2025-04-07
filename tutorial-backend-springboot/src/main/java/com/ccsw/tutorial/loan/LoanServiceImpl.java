@@ -9,6 +9,7 @@ import jakarta.transaction.Transactional;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
@@ -43,24 +44,19 @@ public class LoanServiceImpl implements LoanService {
      * {@inheritDoc}
      */
     @Override
-    public List<Loan> findAll() {
-        return (List<Loan>) this.loanRepository.findAll();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public Page<Loan> findPage(Long idGame, Long idClient, LocalDate filterDate) {
+    public Page<Loan> findPage(Long idGame, Long idClient, LocalDate filterDate, Pageable pageable) {
         LoanSpecification gameSpec = new LoanSpecification(new SearchCriteria("game.id", ":", idGame));
         LoanSpecification clientSpec = new LoanSpecification(new SearchCriteria("client.id", ":", idClient));
         LoanSpecification dateSpec = new LoanSpecification(new SearchCriteria("filterDate", ":", filterDate));
 
         Specification<Loan> spec = Specification.where(gameSpec).and(clientSpec).and(dateSpec);
 
-        return loanRepository.findAll(spec);
+        return loanRepository.findAll(spec, pageable);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void save(Long id, LoanDto dto) {
         Loan loan;
@@ -77,5 +73,25 @@ public class LoanServiceImpl implements LoanService {
         loan.setClient(clientService.get(dto.getClient().getId()));
 
         this.loanRepository.save(loan);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void delete(Long id) throws Exception {
+        if (this.get(id) == null) {
+            throw new Exception("Not exists");
+        }
+
+        this.loanRepository.deleteById(id);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public List<Loan> findAll() {
+        return (List<Loan>) this.loanRepository.findAll();
     }
 }
