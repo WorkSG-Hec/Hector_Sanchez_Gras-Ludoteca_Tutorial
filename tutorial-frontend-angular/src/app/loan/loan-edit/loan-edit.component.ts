@@ -21,7 +21,7 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
     MatDatepickerModule,
   ],
   templateUrl: './loan-edit.component.html',
-  styleUrl: './loan-edit.component.scss'
+  styleUrl: './loan-edit.component.scss',
 })
 export class LoanEditComponent implements OnInit {
   loan: Loan;
@@ -29,7 +29,7 @@ export class LoanEditComponent implements OnInit {
   constructor(
     public dialogRef: MatDialogRef<LoanEditComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
-    private loanService: LoanService
+    private loanService: LoanService,
   ) { }
 
   ngOnInit(): void {

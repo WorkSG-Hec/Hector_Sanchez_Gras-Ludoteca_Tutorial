@@ -10,6 +10,14 @@ import { DialogConfirmationComponent } from '../../core/dialog-confirmation/dial
 import { CommonModule } from '@angular/common';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
+import { FormsModule } from '@angular/forms';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatSelectModule } from '@angular/material/select';
+import { Game } from '../../game/model/Game';
+import { Client } from '../../client/model/Client';
+import { GameService } from '../../game/game.service';
+import { ClientService } from '../../client/client.service';
 
 @Component({
   selector: 'app-loan-list',
@@ -19,6 +27,10 @@ import { MatIconModule } from '@angular/material/icon';
     MatTableModule,
     CommonModule,
     MatPaginator,
+    FormsModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatSelectModule,
   ],
   templateUrl: './loan-list.component.html',
   styleUrl: './loan-list.component.scss'
@@ -31,13 +43,37 @@ export class LoanListComponent implements OnInit {
   dataSource = new MatTableDataSource<Loan>();
   displayedColumns: string[] = ['id', 'game', 'client', 'loanDate', 'returnDate', 'action'];
 
+  games: Game[];
+  clients: Client[];
+  filterGame: Game;
+  filterClient: Client;
+  filterDate: Date;
+
   constructor(
+    private gameService: GameService,
+    private clientService: ClientService,
+
     private loanService: LoanService,
     public dialog: MatDialog,
   ) { }
 
   ngOnInit(): void {
+    this.gameService.getGames().subscribe((games) => (this.games = games));
+    this.clientService.getClients().subscribe((clients) => (this.clients = clients));
+
     this.loadPage();
+  }
+
+  onCleanFilter(): void {
+    this.filterGame = null;
+    this.filterClient = null;
+    this.filterDate = null;
+
+    this.onSearch();
+  }
+
+  onSearch(): void {
+    
   }
 
   loadPage(event?: PageEvent) {
