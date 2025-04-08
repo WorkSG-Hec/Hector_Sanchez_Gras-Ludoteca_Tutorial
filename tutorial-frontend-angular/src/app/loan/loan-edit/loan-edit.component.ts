@@ -8,6 +8,11 @@ import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatSelectModule } from '@angular/material/select';
+import { Game } from '../../game/model/Game';
+import { Client } from '../../client/model/Client';
+import { GameService } from '../../game/game.service';
+import { ClientService } from '../../client/client.service';
 
 @Component({
   selector: 'app-loan-edit',
@@ -15,6 +20,7 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
     FormsModule,
     ReactiveFormsModule,
     MatFormFieldModule,
+    MatSelectModule,
     MatInputModule,
     MatButtonModule,
     MatNativeDateModule,
@@ -26,13 +32,22 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 export class LoanEditComponent implements OnInit {
   loan: Loan;
 
+  games: Game[];
+  clients: Client[];
+
   constructor(
+    private gameService: GameService,
+    private clientService: ClientService,
+
     public dialogRef: MatDialogRef<LoanEditComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
     private loanService: LoanService,
   ) { }
 
   ngOnInit(): void {
+    this.gameService.getGames().subscribe((games) => (this.games = games));
+    this.clientService.getClients().subscribe((clients) => (this.clients = clients));
+
     this.loan = this.data.loan ? Object.assign({}, this.data.loan): new Loan();
   }
 

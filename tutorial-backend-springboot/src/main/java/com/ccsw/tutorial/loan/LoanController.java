@@ -96,4 +96,15 @@ public class LoanController {
 
         return loans.stream().map(e -> mapper.map(e, LoanDto.class)).collect(Collectors.toList());
     }
+
+    /**
+     * Método para borrar un {@link Loan}
+     *
+     * @param id PK de la entidad
+     */
+    @Operation(summary = "Delete", description = "Method that deletes a Loan")
+    @RequestMapping(path = "/{id}", method = RequestMethod.DELETE)
+    public void delete(@PathVariable("id") Long id) throws Exception {
+        this.loanService.delete(id);
+    }
 }

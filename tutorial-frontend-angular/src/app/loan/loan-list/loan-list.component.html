@@ -20,12 +20,20 @@
                     }
                 </mat-select>
             </mat-form-field>
+
+            <mat-form-field>
+                <mat-label>Fecha</mat-label>
+                <input matInput [matDatepicker]="filterDatePicker" [(ngModel)]="filterDate" name="filterDate" placeholder="Fecha de préstamo" />
+                <mat-hint>DD/MM/AAAA</mat-hint>
+                <mat-datepicker-toggle matSuffix [for]="filterDatePicker"></mat-datepicker-toggle>
+                <mat-datepicker #filterDatePicker></mat-datepicker>
+            </mat-form-field>
         </form>
 
-        <!-- <div class="buttons">
+        <div class="buttons">
             <button mat-stroked-button (click)="onCleanFilter()">Limpiar</button>
             <button mat-stroked-button (click)="onSearch()">Filtrar</button>
-        </div> -->
+        </div>
     </div>
 
     <mat-table [dataSource]="dataSource"> 
@@ -35,12 +43,12 @@
         </ng-container>
 
         <ng-container matColumnDef="game">
-            <mat-header-cell *matHeaderCellDef> Nombre juego </mat-header-cell>
+            <mat-header-cell *matHeaderCellDef> Nombre del juego </mat-header-cell>
             <mat-cell *matCellDef="let element"> {{element.game.title}} </mat-cell>
         </ng-container>
 
         <ng-container matColumnDef="client">
-            <mat-header-cell *matHeaderCellDef> Nombre cliente </mat-header-cell>
+            <mat-header-cell *matHeaderCellDef> Nombre del cliente </mat-header-cell>
             <mat-cell *matCellDef="let element"> {{element.client.name}} </mat-cell>
         </ng-container>
 
@@ -67,7 +75,7 @@
         <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
     </mat-table> 
 
-    <mat-paginator (page)="loadPage($event)" [pageSizeOptions]="[5, 10, 20]" [pageIndex]="pageNumber" [pageSize]="pageSize" [length]="totalElements" showFirstLastButtons></mat-paginator>
+    <mat-paginator (page)="onSearch($event)" [pageSizeOptions]="[5, 10, 20]" [pageIndex]="pageNumber" [pageSize]="pageSize" [length]="totalElements" showFirstLastButtons></mat-paginator>
 
     <div class="buttons">
         <button mat-flat-button color="primary" (click)="createLoan()">Nuevo préstamo</button> 

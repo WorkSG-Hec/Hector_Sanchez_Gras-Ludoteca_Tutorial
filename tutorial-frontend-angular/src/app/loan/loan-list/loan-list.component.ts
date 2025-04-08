@@ -7,7 +7,7 @@ import { LoanService } from '../loan.service';
 import { Loan } from '../model/Loan';
 import { Pageable } from '../../core/model/page/Pageable';
 import { DialogConfirmationComponent } from '../../core/dialog-confirmation/dialog-confirmation.component';
-import { CommonModule } from '@angular/common';
+import { CommonModule, DatePipe } from '@angular/common';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { FormsModule } from '@angular/forms';
@@ -18,6 +18,8 @@ import { Game } from '../../game/model/Game';
 import { Client } from '../../client/model/Client';
 import { GameService } from '../../game/game.service';
 import { ClientService } from '../../client/client.service';
+import { MatNativeDateModule } from '@angular/material/core';
+import { MatDatepickerModule } from '@angular/material/datepicker';
 
 @Component({
   selector: 'app-loan-list',
@@ -31,6 +33,8 @@ import { ClientService } from '../../client/client.service';
     MatFormFieldModule,
     MatInputModule,
     MatSelectModule,
+    MatNativeDateModule,
+    MatDatepickerModule,
   ],
   templateUrl: './loan-list.component.html',
   styleUrl: './loan-list.component.scss'
@@ -61,7 +65,7 @@ export class LoanListComponent implements OnInit {
     this.gameService.getGames().subscribe((games) => (this.games = games));
     this.clientService.getClients().subscribe((clients) => (this.clients = clients));
 
-    this.loadPage();
+    this.onSearch();
   }
 
   onCleanFilter(): void {
@@ -72,8 +76,33 @@ export class LoanListComponent implements OnInit {
     this.onSearch();
   }
 
-  onSearch(): void {
-    
+  onSearch(event?: PageEvent): void {
+    const pageable: Pageable = {
+      pageNumber: this.pageNumber,
+      pageSize: this.pageSize,
+      sort: [
+        {
+          property: 'id',
+          direction: 'ASC',
+        },
+      ],
+    };
+
+    if (!this.filterGame && !this.filterClient && !this.filterDate) {
+      this.loadPage(event);
+    } else {
+      this.loanService.getLoans(
+        this.filterGame?.id,
+        this.filterClient?.id,
+        this.filterDate,
+        pageable
+      ).subscribe((data) => {
+        this.dataSource.data = data.content;
+        this.pageNumber = data.pageable.pageNumber;
+        this.pageSize = data.pageable.pageSize;
+        this.totalElements = data.totalElements;
+      });
+    }
   }
 
   loadPage(event?: PageEvent) {
@@ -93,7 +122,7 @@ export class LoanListComponent implements OnInit {
       pageable.pageNumber = event.pageIndex;
     }
 
-    this.loanService.getLoans(pageable).subscribe((data) => {
+    this.loanService.getLoans(null, null, null, pageable).subscribe((data) => {
       this.dataSource.data = data.content;
       this.pageNumber = data.pageable.pageNumber;
       this.pageSize = data.pageable.pageSize;
