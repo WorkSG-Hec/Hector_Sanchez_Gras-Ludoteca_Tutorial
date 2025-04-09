@@ -11,6 +11,7 @@ import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
 
 import java.time.LocalDate;
+import java.util.List;
 
 /**
  * @author ccsw
@@ -18,11 +19,11 @@ import java.time.LocalDate;
  */
 public interface LoanRepository extends CrudRepository<Loan, Long>, JpaSpecificationExecutor<Loan> {
 
-    @Query("SELECT CASE WHEN COUNT(1) > 0 THEN true ELSE false END " + "FROM Loan l " + "WHERE l.game.id = :gameId " + "AND (l.loanDate <= :returnDate AND l.returnDate >= :loanDate)")
-    boolean existsByGameIdAndDateRange(@Param("gameId") Long gameId, @Param("loanDate") LocalDate loanDate, @Param("returnDate") LocalDate returnDate);
-
     @Query("SELECT COUNT(1) " + "FROM Loan l " + "WHERE l.client.id = :clientId " + "AND (l.loanDate <= :returnDate AND l.returnDate >= :loanDate)")
     long countActiveLoansByClient(@Param("clientId") Long clientId, @Param("loanDate") LocalDate loanDate, @Param("returnDate") LocalDate returnDate);
+
+    @Query("SELECT l FROM Loan l " + "WHERE l.game.id = :gameId " + "AND (l.loanDate <= :returnDate AND l.returnDate >= :loanDate)")
+    List<Loan> findConflictingLoansForGame(@Param("gameId") Long gameId, @Param("loanDate") LocalDate loanDate, @Param("returnDate") LocalDate returnDate);
 
     @Override
     @EntityGraph(attributePaths = { "game", "client" })

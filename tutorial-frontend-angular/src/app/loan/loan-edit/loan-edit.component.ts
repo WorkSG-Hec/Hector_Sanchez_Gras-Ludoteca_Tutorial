@@ -54,7 +54,12 @@ export class LoanEditComponent implements OnInit {
   }
 
   onSave() {
-    this.loanService.saveLoan(this.loan).subscribe({
+    const adjustedLoanDate = new Date(this.loan.loanDate.getTime() - this.loan.loanDate.getTimezoneOffset() * 60000);
+    const adjustedReturnDate = new Date(this.loan.returnDate.getTime() - this.loan.returnDate.getTimezoneOffset() * 60000);
+
+    const loanToSave = { ...this.loan, loanDate: adjustedLoanDate, returnDate: adjustedReturnDate };
+
+    this.loanService.saveLoan(loanToSave).subscribe({
       next: () => {
         this.dialogRef.close();
       },

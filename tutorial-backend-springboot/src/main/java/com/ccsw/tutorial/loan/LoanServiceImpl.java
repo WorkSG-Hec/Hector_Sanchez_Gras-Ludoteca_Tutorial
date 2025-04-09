@@ -14,6 +14,7 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
 
@@ -65,26 +66,26 @@ public class LoanServiceImpl implements LoanService {
         }
 
         long daysBetween = ChronoUnit.DAYS.between(dto.getLoanDate(), dto.getReturnDate());
-        if (daysBetween > 14) {
+        if (daysBetween >= 14) {
             throw new IllegalArgumentException("El período máximo de préstamo son 14 días.");
         }
 
-        if (loanRepository.existsByGameIdAndDateRange(dto.getGame().getId(), dto.getLoanDate(), dto.getReturnDate())) {
-            throw new IllegalArgumentException("El juego " + dto.getGame().getTitle() + " ya está prestado a " + dto.getClient().getName() + " en el rango de fechas seleccionado.");
+        List<Loan> conflictingLoans = loanRepository.findConflictingLoansForGame(dto.getGame().getId(), dto.getLoanDate(), dto.getReturnDate());
+        if (!conflictingLoans.isEmpty()) {
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+
+            Loan existingLoan = conflictingLoans.get(0);
+            throw new IllegalArgumentException(
+                    "El juego \"" + dto.getGame().getTitle() + "\" ya está prestado a " + existingLoan.getClient().getName() + " del " + existingLoan.getLoanDate().format(formatter) + " al " + existingLoan.getReturnDate().format(formatter)
+                            + ".");
         }
 
         long activeLoansCount = loanRepository.countActiveLoansByClient(dto.getClient().getId(), dto.getLoanDate(), dto.getReturnDate());
-        if (activeLoansCount >= 2) {
+        if (activeLoansCount >= 1) {
             throw new IllegalArgumentException("El cliente " + dto.getClient().getName() + " no puede tener más de 1 juego prestado simultáneamente.");
         }
 
-        Loan loan;
-
-        if (id == null) {
-            loan = new Loan();
-        } else {
-            loan = loanRepository.findById(id).orElse(null);
-        }
+        Loan loan = new Loan();
 
         BeanUtils.copyProperties(dto, loan, "id", "game", "client");
 
