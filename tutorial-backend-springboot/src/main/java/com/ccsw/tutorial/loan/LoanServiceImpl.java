@@ -14,6 +14,7 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 
 /**
@@ -59,6 +60,24 @@ public class LoanServiceImpl implements LoanService {
      */
     @Override
     public void save(Long id, LoanDto dto) {
+        if (dto.getReturnDate().isBefore(dto.getLoanDate())) {
+            throw new IllegalArgumentException("La fecha de fin no puede ser anterior a la de inicio.");
+        }
+
+        long daysBetween = ChronoUnit.DAYS.between(dto.getLoanDate(), dto.getReturnDate());
+        if (daysBetween > 14) {
+            throw new IllegalArgumentException("El período máximo de préstamo son 14 días.");
+        }
+
+        if (loanRepository.existsByGameIdAndDateRange(dto.getGame().getId(), dto.getLoanDate(), dto.getReturnDate())) {
+            throw new IllegalArgumentException("El juego " + dto.getGame().getTitle() + " ya está prestado a " + dto.getClient().getName() + " en el rango de fechas seleccionado.");
+        }
+
+        long activeLoansCount = loanRepository.countActiveLoansByClient(dto.getClient().getId(), dto.getLoanDate(), dto.getReturnDate());
+        if (activeLoansCount >= 2) {
+            throw new IllegalArgumentException("El cliente " + dto.getClient().getName() + " no puede tener más de 1 juego prestado simultáneamente.");
+        }
+
         Loan loan;
 
         if (id == null) {

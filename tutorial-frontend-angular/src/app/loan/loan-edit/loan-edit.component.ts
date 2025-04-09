@@ -13,6 +13,7 @@ import { Game } from '../../game/model/Game';
 import { Client } from '../../client/model/Client';
 import { GameService } from '../../game/game.service';
 import { ClientService } from '../../client/client.service';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-loan-edit',
@@ -42,6 +43,7 @@ export class LoanEditComponent implements OnInit {
     public dialogRef: MatDialogRef<LoanEditComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
     private loanService: LoanService,
+    private snackBar: MatSnackBar
   ) { }
 
   ngOnInit(): void {
@@ -52,8 +54,18 @@ export class LoanEditComponent implements OnInit {
   }
 
   onSave() {
-    this.loanService.saveLoan(this.loan).subscribe(() => {
-      this.dialogRef.close();
+    this.loanService.saveLoan(this.loan).subscribe({
+      next: () => {
+        this.dialogRef.close();
+      },
+      error: (error) => {
+        if (error.status === 400 && error.error) {
+          this.snackBar.open(error.error?.message, 'Cerrar', {
+            duration: 3000,
+            panelClass: ['snackbar-error']
+          });
+        }
+      }
     });
   }
 
