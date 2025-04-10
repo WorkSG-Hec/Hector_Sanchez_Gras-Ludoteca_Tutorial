@@ -1,0 +1,58 @@
+<div class="container">
+    <h1>Crear préstamo</h1>
+
+    <form>
+        <mat-form-field>
+            <mat-label>Identificador</mat-label>
+            <input type="text" matInput placeholder="Identificador" [(ngModel)]="loan.id" name="id" disabled>
+        </mat-form-field>
+
+        <mat-form-field>
+            <mat-label>Juego</mat-label>
+            <mat-select disableRipple [(ngModel)]="loan.game" name="game" required>
+                @for (game of games; track game.id) {
+                    <mat-option [value]="game">{{ game.title }}</mat-option>
+                }
+            </mat-select>
+            <mat-error>El juego no puede estar vacío</mat-error>
+        </mat-form-field>
+
+        <mat-form-field>
+            <mat-label>Cliente</mat-label>
+            <mat-select disableRipple [(ngModel)]="loan.client" name="client" required>
+                @for (client of clients; track client.id) {
+                    <mat-option [value]="client">{{ client.name }}</mat-option>
+                }
+            </mat-select>
+            <mat-error>El cliente no puede estar vacía</mat-error>
+        </mat-form-field>
+
+        <mat-label>Fecha de préstamo</mat-label>
+        <div class="date-filters">
+            <div>
+                <mat-form-field class="mat-form-field-1">
+                    <mat-label>Inicio préstamo</mat-label>
+                    <input matInput [matDatepicker]="loanDatePicker" [(ngModel)]="loan.loanDate" name="loanDate" placeholder="Fecha de inicio préstamo" required />
+                    <mat-hint>DD/MM/AAAA</mat-hint>
+                    <mat-datepicker-toggle matSuffix [for]="loanDatePicker"></mat-datepicker-toggle>
+                    <mat-datepicker #loanDatePicker></mat-datepicker>
+                    <mat-error>Fecha de inicio requerida.</mat-error>
+                </mat-form-field>
+
+                <mat-form-field class="mat-form-field-2">
+                    <mat-label>Fin préstamo</mat-label>
+                    <input matInput [matDatepicker]="returnDatePicker" [(ngModel)]="loan.returnDate" name="returnDate" placeholder="Fecha de fin préstamo" required />
+                    <mat-hint>DD/MM/AAAA</mat-hint>
+                    <mat-datepicker-toggle matSuffix [for]="returnDatePicker"></mat-datepicker-toggle>
+                    <mat-datepicker #returnDatePicker></mat-datepicker>
+                    <mat-error>Fecha de fin requerida.</mat-error>
+                </mat-form-field>
+            </div>
+        </div>
+    </form>
+
+    <div class="buttons">
+        <button mat-stroked-button (click)="onClose()">Cerrar</button>
+        <button mat-flat-button color="primary" (click)="onSave()">Guardar</button>
+    </div>
+</div>

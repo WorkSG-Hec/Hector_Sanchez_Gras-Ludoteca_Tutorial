@@ -6,6 +6,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-client-edit',
@@ -25,7 +26,8 @@ export class ClientEditComponent implements OnInit {
   constructor(
     public dialogRef: MatDialogRef<ClientEditComponent>,
     @Inject(MAT_DIALOG_DATA) public data: {client: Client},
-    private clientService: ClientService
+    private clientService: ClientService,
+    private snackBar: MatSnackBar
   ) { }
 
   ngOnInit(): void {
@@ -33,9 +35,18 @@ export class ClientEditComponent implements OnInit {
   }
 
   onSave() {
-    this.clientService.saveClient(this.client).subscribe(() => {
-      this.dialogRef.close();
-      console.log("guardado", this.data.client.name);
+    this.clientService.saveClient(this.client).subscribe({
+      next: () => {
+        this.dialogRef.close();
+      },
+      error: (error) => {
+        if (error.status === 400 && error.error) {
+          this.snackBar.open(error.error?.message, 'Cerrar', {
+            duration: 3000,
+            panelClass: ['snackbar-error']
+          });
+        }
+      }
     });
   }
 
