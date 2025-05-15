@@ -19,7 +19,7 @@ import java.util.List;
  */
 public interface LoanRepository extends CrudRepository<Loan, Long>, JpaSpecificationExecutor<Loan> {
 
-    @Query("SELECT COUNT(1) " + "FROM Loan l " + "WHERE l.client.id = :clientId " + "AND (l.loanDate <= :returnDate AND l.returnDate >= :loanDate)")
+    @Query("SELECT COUNT(2) " + "FROM Loan l " + "WHERE l.client.id = :clientId " + "AND (l.loanDate <= :returnDate AND l.returnDate >= :loanDate)")
     long countActiveLoansByClient(@Param("clientId") Long clientId, @Param("loanDate") LocalDate loanDate, @Param("returnDate") LocalDate returnDate);
 
     @Query("SELECT l FROM Loan l " + "WHERE l.game.id = :gameId " + "AND (l.loanDate <= :returnDate AND l.returnDate >= :loanDate)")

@@ -1,12 +1,13 @@
 import { Component, OnInit, Inject } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { ClientService } from '../client.service';
-import { Client } from '../model/Client';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { NoWhitespaceValidatorDirective } from '@core/validators/whitespace.validator';
+import { ClientService } from '@client/client.service';
+import { Client } from '@client/model/Client';
 
 @Component({
   selector: 'app-client-edit',
@@ -15,17 +16,18 @@ import { MatSnackBar } from '@angular/material/snack-bar';
     ReactiveFormsModule,
     MatFormFieldModule,
     MatInputModule,
-    MatButtonModule
+    MatButtonModule,
+    NoWhitespaceValidatorDirective
   ],
   templateUrl: './client-edit.component.html',
   styleUrl: './client-edit.component.scss'
 })
 export class ClientEditComponent implements OnInit {
   client: Client;
-  
+
   constructor(
     public dialogRef: MatDialogRef<ClientEditComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: {client: Client},
+    @Inject(MAT_DIALOG_DATA) public data: { client: Client },
     private clientService: ClientService,
     private snackBar: MatSnackBar
   ) { }

@@ -2,24 +2,24 @@ import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
-import { LoanEditComponent } from '../loan-edit/loan-edit.component';
-import { LoanService } from '../loan.service';
-import { Loan } from '../model/Loan';
-import { Pageable } from '../../core/model/page/Pageable';
-import { DialogConfirmationComponent } from '../../core/dialog-confirmation/dialog-confirmation.component';
-import { CommonModule, DatePipe } from '@angular/common';
+import { CommonModule } from '@angular/common';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { FormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
-import { Game } from '../../game/model/Game';
-import { Client } from '../../client/model/Client';
-import { GameService } from '../../game/game.service';
-import { ClientService } from '../../client/client.service';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MatDatepickerModule } from '@angular/material/datepicker';
+import { ClientService } from '@client/client.service';
+import { Client } from '@client/model/Client';
+import { DialogConfirmationComponent } from '@core/dialog-confirmation/dialog-confirmation.component';
+import { Pageable } from '@core/model/page/Pageable';
+import { GameService } from '@game/game.service';
+import { Game } from '@game/model/Game';
+import { LoanEditComponent } from '@loan/loan-edit/loan-edit.component';
+import { LoanService } from '@loan/loan.service';
+import { Loan } from '@loan/model/Loan';
 
 @Component({
   selector: 'app-loan-list',

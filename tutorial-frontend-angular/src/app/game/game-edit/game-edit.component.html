@@ -1,11 +1,11 @@
 <div class="container">
     @if (game.id) {
-        <h1>Modificar juego</h1>
+    <h1>Modificar juego</h1>
     } @else {
-        <h1>Crear juego</h1>
+    <h1>Crear juego</h1>
     }
 
-    <form>
+    <form #form="ngForm">
         <mat-form-field>
             <mat-label>Identificador</mat-label>
             <input type="text" matInput placeholder="Identificador" [(ngModel)]="game.id" name="id" disabled>
@@ -13,13 +13,15 @@
 
         <mat-form-field>
             <mat-label>Título</mat-label>
-            <input type="text" matInput placeholder="Título del juego" [(ngModel)]="game.title" name="title" required>
+            <input type="text" matInput placeholder="Título del juego" [(ngModel)]="game.title" name="title" required
+                noWhitespace>
             <mat-error>El título no puede estar vacío</mat-error>
         </mat-form-field>
 
         <mat-form-field>
             <mat-label>Edad recomendada</mat-label>
-            <input type="number" matInput placeholder="Edad recomendada" [(ngModel)]="game.age" name="age" required>
+            <input type="number" matInput placeholder="Edad recomendada" [(ngModel)]="game.age" name="age" min="0"
+                required>
             <mat-error>La edad no puede estar vacía</mat-error>
         </mat-form-field>
 
@@ -27,7 +29,7 @@
             <mat-label>Categoría</mat-label>
             <mat-select disableRipple [(ngModel)]="game.category" name="category" required>
                 @for (category of categories; track category.id) {
-                    <mat-option [value]="category">{{category.name}}</mat-option>
+                <mat-option [value]="category">{{category.name}}</mat-option>
                 }
             </mat-select>
             <mat-error>La categoría no puede estar vacía</mat-error>
@@ -37,7 +39,7 @@
             <mat-label>Autor</mat-label>
             <mat-select disableRipple [(ngModel)]="game.author" name="author" required>
                 @for (author of authors; track author.id) {
-                    <mat-option [value]="author">{{author.name}}</mat-option>
+                <mat-option [value]="author">{{author.name}}</mat-option>
                 }
             </mat-select>
             <mat-error>El autor no puede estar vacío</mat-error>
@@ -46,6 +48,6 @@
 
     <div class="buttons">
         <button mat-stroked-button (click)="onClose()">Cerrar</button>
-        <button mat-flat-button color="primary" (click)="onSave()">Guardar</button>
+        <button mat-flat-button color="primary" (click)="onSave()" [disabled]="!form.valid">Guardar</button>
     </div>
 </div>

@@ -1,16 +1,17 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { GameService } from '../game.service';
-import { Game } from '../model/Game';
-import { AuthorService } from '../../author/author.service';
-import { Author } from '../../author/model/Author';
-import { CategoryService } from '../../category/category.service';
-import { Category } from '../../category/model/Category';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
+import { NoWhitespaceValidatorDirective } from '@core/validators/whitespace.validator';
+import { AuthorService } from '@author/author.service';
+import { Author } from '@author/model/Author';
+import { CategoryService } from '@category/category.service';
+import { Category } from '@category/model/Category';
+import { GameService } from '@game/game.service';
+import { Game } from '@game/model/Game';
 
 @Component({
   selector: 'app-game-edit',
@@ -19,7 +20,8 @@ import { MatSelectModule } from '@angular/material/select';
     MatFormFieldModule,
     MatInputModule,
     MatButtonModule,
-    MatSelectModule
+    MatSelectModule,
+    NoWhitespaceValidatorDirective
   ],
   templateUrl: './game-edit.component.html',
   styleUrl: './game-edit.component.scss'
