@@ -1,11 +1,12 @@
 import { Component, OnInit, Inject } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { CategoryService } from '../category.service';
-import { Category } from '../model/Category';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
+import { NoWhitespaceValidatorDirective } from '@core/validators/whitespace.validator';
+import { CategoryService } from '@category/category.service';
+import { Category } from '@category/model/Category';
 
 @Component({
   selector: 'app-category-edit',
@@ -14,7 +15,8 @@ import { MatButtonModule } from '@angular/material/button';
     ReactiveFormsModule,
     MatFormFieldModule,
     MatInputModule,
-    MatButtonModule
+    MatButtonModule,
+    NoWhitespaceValidatorDirective
   ],
   templateUrl: './category-edit.component.html',
   styleUrl: './category-edit.component.scss'
@@ -24,7 +26,7 @@ export class CategoryEditComponent implements OnInit {
 
   constructor(
     public dialogRef: MatDialogRef<CategoryEditComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: {category: Category},
+    @Inject(MAT_DIALOG_DATA) public data: { category: Category },
     private categoryService: CategoryService
   ) { }
 

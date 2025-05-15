@@ -1,14 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
-import { Category } from '../model/Category';
 import { CommonModule } from '@angular/common';
 import { MatTableModule } from '@angular/material/table';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
-import { CategoryService } from '../category.service';
 import { MatDialog } from '@angular/material/dialog';
-import { CategoryEditComponent } from '../category-edit/category-edit.component';
-import { DialogConfirmationComponent } from '../../core/dialog-confirmation/dialog-confirmation.component';
+import { CategoryEditComponent } from '@category/category-edit/category-edit.component';
+import { DialogConfirmationComponent } from '@core/dialog-confirmation/dialog-confirmation.component';
+import { CategoryService } from '@category/category.service';
+import { Category } from '@category/model/Category';
 
 @Component({
   selector: 'app-category-list',

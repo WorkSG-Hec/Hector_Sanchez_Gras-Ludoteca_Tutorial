@@ -1,7 +1,5 @@
 import { Component, Inject, OnInit } from '@angular/core';
-import { Loan } from '../model/Loan';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { LoanService } from '../loan.service';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
@@ -9,11 +7,13 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatSelectModule } from '@angular/material/select';
-import { Game } from '../../game/model/Game';
-import { Client } from '../../client/model/Client';
-import { GameService } from '../../game/game.service';
-import { ClientService } from '../../client/client.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { ClientService } from '@client/client.service';
+import { Client } from '@client/model/Client';
+import { GameService } from '@game/game.service';
+import { Game } from '@game/model/Game';
+import { LoanService } from '@loan/loan.service';
+import { Loan } from '@loan/model/Loan';
 
 @Component({
   selector: 'app-loan-edit',
@@ -50,7 +50,7 @@ export class LoanEditComponent implements OnInit {
     this.gameService.getGames().subscribe((games) => (this.games = games));
     this.clientService.getClients().subscribe((clients) => (this.clients = clients));
 
-    this.loan = this.data.loan ? Object.assign({}, this.data.loan): new Loan();
+    this.loan = this.data.loan ? Object.assign({}, this.data.loan) : new Loan();
   }
 
   onSave() {

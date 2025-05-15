@@ -1,10 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { GameEditComponent } from '../game-edit/game-edit.component';
-import { GameService } from '../game.service';
-import { Game } from '../model/Game';
-import { CategoryService } from '../../category/category.service';
-import { Category } from '../../category/model/Category';
 import { CommonModule } from '@angular/common';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
@@ -13,6 +8,11 @@ import { FormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
+import { CategoryService } from '@category/category.service';
+import { Category } from '@category/model/Category';
+import { GameEditComponent } from '@game/game-edit/game-edit.component';
+import { GameService } from '@game/game.service';
+import { Game } from '@game/model/Game';
 import { GameItemComponent } from './game-item/game-item.component';
 
 @Component({

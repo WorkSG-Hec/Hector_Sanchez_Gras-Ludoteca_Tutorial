@@ -3,6 +3,27 @@
 {
   "compileOnSave": false,
   "compilerOptions": {
+    "baseUrl": "./",
+    "paths": {
+      "@author/*": [
+        "./src/app/author/*"
+      ],
+      "@category/*": [
+        "./src/app/category/*"
+      ],
+      "@client/*": [
+        "./src/app/client/*"
+      ],
+      "@core/*": [
+        "./src/app/core/*"
+      ],
+      "@game/*": [
+        "./src/app/game/*"
+      ],
+      "@loan/*": [
+        "./src/app/loan/*"
+      ],
+    },
     "outDir": "./dist/out-tsc",
     "skipLibCheck": true,
     "isolatedModules": true,

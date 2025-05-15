@@ -2,14 +2,14 @@ import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
-import { AuthorEditComponent } from '../author-edit/author-edit.component';
-import { AuthorService } from '../author.service';
-import { Author } from '../model/Author';
-import { Pageable } from '../../core/model/page/Pageable';
-import { DialogConfirmationComponent } from '../../core/dialog-confirmation/dialog-confirmation.component';
+import { AuthorEditComponent } from '@author/author-edit/author-edit.component';
+import { Pageable } from '@core/model/page/Pageable';
+import { DialogConfirmationComponent } from '@core/dialog-confirmation/dialog-confirmation.component';
 import { CommonModule } from '@angular/common';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
+import { Author } from '@author/model/Author';
+import { AuthorService } from '@author/author.service';
 
 @Component({
   selector: 'app-author-list',
@@ -21,7 +21,7 @@ import { MatIconModule } from '@angular/material/icon';
     MatPaginator
   ],
   templateUrl: './author-list.component.html',
-  styleUrl: './author-list.component.scss'
+  styleUrl: './author-list.component.scss',
 })
 export class AuthorListComponent implements OnInit {
   pageNumber: number = 0;

@@ -1,14 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
-import { Client } from '../model/Client';
 import { CommonModule } from '@angular/common';
 import { MatTableModule } from '@angular/material/table';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
-import { ClientService } from '../client.service';
 import { MatDialog } from '@angular/material/dialog';
-import { ClientEditComponent } from '../client-edit/client-edit.component';
-import { DialogConfirmationComponent } from '../../core/dialog-confirmation/dialog-confirmation.component';
+import { ClientEditComponent } from '@client/client-edit/client-edit.component';
+import { DialogConfirmationComponent } from '@core/dialog-confirmation/dialog-confirmation.component';
+import { ClientService } from '@client/client.service';
+import { Client } from '@client/model/Client';
 
 @Component({
   selector: 'app-client-list',
