@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { catchError, Observable, of, tap } from 'rxjs';
 import { Game } from './model/Game';
 import { HttpClient } from '@angular/common/http';
 
@@ -14,7 +14,24 @@ export class GameService {
   private baseUrl = 'http://localhost:8080/game';
 
   getGames(title?: string, categoryId?: number): Observable<Game[]> {
-    return this.http.get<Game[]>(this.composeFindUrl(title, categoryId));
+    const url = this.composeFindUrl(title, categoryId);
+
+    return this.http.get<Game[]>(url).pipe(
+      tap(games => {
+        localStorage.setItem('games', JSON.stringify(games));
+      }),
+      catchError(error => {
+        console.error("Error al obtener los juegos desde la API. Cargando desde localStorage.", error);
+        const games = localStorage.getItem('games');
+        if (games) {
+          return of(JSON.parse(games));
+        } else {
+          return of([]);
+        }
+      })
+    );
+
+    // return this.http.get<Game[]>(this.composeFindUrl(title, categoryId));
   }
 
   saveGame(game: Game): Observable<void> {
