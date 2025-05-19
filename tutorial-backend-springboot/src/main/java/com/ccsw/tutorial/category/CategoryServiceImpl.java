@@ -42,6 +42,10 @@ public class CategoryServiceImpl implements CategoryService {
      */
     @Override
     public void save(Long id, CategoryDto dto) {
+        String trimmedName = dto.getName() != null ? dto.getName().trim() : "";
+        if (trimmedName.isEmpty()) {
+            throw new IllegalArgumentException("El nombre de la categoría no puede estar vacío o ser solo espacios");
+        }
 
         Category category;
 
@@ -51,7 +55,7 @@ public class CategoryServiceImpl implements CategoryService {
             category = this.get(id);
         }
 
-        category.setName(dto.getName());
+        category.setName(trimmedName);
 
         this.categoryRepository.save(category);
     }

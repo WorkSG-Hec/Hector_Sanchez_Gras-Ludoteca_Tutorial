@@ -41,6 +41,11 @@ public class ClientServiceImpl implements ClientService {
      */
     @Override
     public void save(Long id, ClientDto dto) {
+        String trimmedName = dto.getName() != null ? dto.getName().trim() : "";
+        if (trimmedName.isEmpty()) {
+            throw new IllegalArgumentException("El nombre del cliente no puede estar vacío o ser solo espacios");
+        }
+
         Optional<Client> existingClient = clientRepository.findByName(dto.getName());
 
         if (existingClient.isPresent() && (id == null || !existingClient.get().getId().equals(id))) {
@@ -55,7 +60,7 @@ public class ClientServiceImpl implements ClientService {
             client = this.get(id);
         }
 
-        client.setName(dto.getName());
+        client.setName(trimmedName);
 
         this.clientRepository.save(client);
     }

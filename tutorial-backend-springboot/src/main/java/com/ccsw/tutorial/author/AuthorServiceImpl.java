@@ -45,6 +45,14 @@ public class AuthorServiceImpl implements AuthorService {
      */
     @Override
     public void save(Long id, AuthorDto data) {
+        String trimmedName = data.getName() != null ? data.getName().trim() : "";
+        String trimmedNationality = data.getNationality() != null ? data.getNationality().trim() : "";
+        if (trimmedName.isEmpty()) {
+            throw new IllegalArgumentException("El nombre del autor no puede estar vacío o ser solo espacios");
+        }
+        if (trimmedNationality.isEmpty()) {
+            throw new IllegalArgumentException("La nacionalidad del autor no puede estar vacía o ser solo espacios");
+        }
 
         Author author;
 
@@ -56,6 +64,8 @@ public class AuthorServiceImpl implements AuthorService {
 
         BeanUtils.copyProperties(data, author, "id");
 
+        author.setName(trimmedName);
+        author.setNationality(trimmedNationality);
         this.authorRepository.save(author);
     }
 

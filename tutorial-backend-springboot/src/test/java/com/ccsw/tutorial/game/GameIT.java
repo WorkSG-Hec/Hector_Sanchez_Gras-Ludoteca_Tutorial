@@ -183,7 +183,7 @@ public class GameIT {
         categoryDto.setId(1L);
 
         dto.setTitle(NEW_TITLE);
-        dto.setAge("18");
+        dto.setAge(18);
         dto.setAuthor(authorDto);
         dto.setCategory(categoryDto);
 
@@ -215,7 +215,7 @@ public class GameIT {
         categoryDto.setId(1L);
 
         dto.setTitle(NEW_TITLE);
-        dto.setAge("18");
+        dto.setAge(18);
         dto.setAuthor(authorDto);
         dto.setCategory(categoryDto);
 

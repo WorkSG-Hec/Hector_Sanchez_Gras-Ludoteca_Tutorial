@@ -13,7 +13,7 @@ public class GameDto {
 
     private String title;
 
-    private String age;
+    private int age;
 
     private CategoryDto category;
 
@@ -54,7 +54,7 @@ public class GameDto {
     /**
      * @return age
      */
-    public String getAge() {
+    public int getAge() {
 
         return this.age;
     }
@@ -62,7 +62,7 @@ public class GameDto {
     /**
      * @param age new value of {@link #getAge}.
      */
-    public void setAge(String age) {
+    public void setAge(int age) {
 
         this.age = age;
     }

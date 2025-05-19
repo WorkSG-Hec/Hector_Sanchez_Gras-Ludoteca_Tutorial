@@ -21,7 +21,7 @@ public class Game {
     private String title;
 
     @Column(name = "age", nullable = false)
-    private String age;
+    private int age;
 
     @ManyToOne
     @JoinColumn(name = "category_id", nullable = false)
@@ -66,7 +66,7 @@ public class Game {
     /**
      * @return age
      */
-    public String getAge() {
+    public int getAge() {
 
         return this.age;
     }
@@ -74,7 +74,7 @@ public class Game {
     /**
      * @param age new value of {@link #getAge}.
      */
-    public void setAge(String age) {
+    public void setAge(int age) {
 
         this.age = age;
     }

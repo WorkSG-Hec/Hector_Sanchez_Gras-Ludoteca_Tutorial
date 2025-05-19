@@ -54,6 +54,13 @@ public class GameServiceImpl implements GameService {
      */
     @Override
     public void save(Long id, GameDto dto) {
+        String trimmedTitle = dto.getTitle() != null ? dto.getTitle().trim() : "";
+        if (trimmedTitle.isEmpty()) {
+            throw new IllegalArgumentException("El título del juego no puede estar vacío o ser solo espacios");
+        }
+        if (dto.getAge() < 0) {
+            throw new IllegalArgumentException("La edad mínima debe ser 0 o superior.");
+        }
 
         Game game;
 
@@ -65,6 +72,7 @@ public class GameServiceImpl implements GameService {
 
         BeanUtils.copyProperties(dto, game, "id", "author", "category");
 
+        game.setTitle(trimmedTitle);
         game.setAuthor(authorService.get(dto.getAuthor().getId()));
         game.setCategory(categoryService.get(dto.getCategory().getId()));
 
